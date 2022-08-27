@@ -1,9 +1,6 @@
 package com.cn.scitc.mapper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.StringTokenizer;
@@ -44,16 +41,24 @@ public class spider {
             Matcher commentMatcher = commentPattern.matcher(s);
             String name, img, time, comment;
             int i = 1;
+            File file = new File("comments.csv");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            FileWriter writer = new FileWriter(file);
             while (nameMatcher.find() && imgMatcher.find() && timeMatcher.find() && commentMatcher.find()) {
                 name = nameMatcher.group(1);
                 img = imgMatcher.group(1);
                 time = timeMatcher.group(1);
                 comment = commentMatcher.group(1);
+                comment = comment.replace("\\n", "");
                 System.out.println(i + " " + name + " " + img + " " + time + " " + comment);
                 i++;
-            }
-        }
 
+                writer.write(name+","+time+","+comment+","+img+"\n");
+            }
+            writer.close();
+        }
     }
     public String convertUnicodeToString(String s){
         Pattern pattern = Pattern.compile("(\\\\u(\\w{4}))");
