@@ -5,17 +5,28 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.InputStream;
+import java.lang.management.MonitorInfo;
 
 public class main {
     public static void main(String[] args) {
-//        InputStream input = Movie.class.getClassLoader().getResourceAsStream("mybatis-config.xml");
-//        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(input);
+        InputStream input = Movie.class.getClassLoader().getResourceAsStream("mybatis-config.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(input);
+        SqlSession sqlsession = factory.openSession();
+        Movie movie = new Movie();
+        movie.setId(1);
+        movie.setName("why");
+        movie.setComment("真好啊！");
+        movie.setImg("https://www.baicu.com");
+        movie.setTime("2021-02-16 22:33:01");
+        sqlsession.insert("aaa.insert", movie);
+        sqlsession.commit();
 //
-//        SqlSession sqlsession = factory.openSession();
-//        Movie movie = sqlsession.selectOne("com.cn.scitc.mapper.MovieMapper.findall");
-//        System.out.println(movie);
-        String a = "abcabb";
-        a = a.replace("a", "");
-        System.out.println(a);
+//        Movie movie = sqlsession.selectOne("aaa.findAll");
+//        System.out.println(movie.getId());
+//        System.out.println(movie.getName());
+//        System.out.println(movie.getComment());
+//        System.out.println(movie.getImg());
+//        System.out.println(movie.getTime());
+
     }
 }

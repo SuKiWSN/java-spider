@@ -1,5 +1,9 @@
 package com.cn.scitc.mapper;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -46,6 +50,11 @@ public class spider {
                 file.createNewFile();
             }
             FileWriter writer = new FileWriter(file);
+            int id = 1;
+            InputStream input = Movie.class.getClassLoader().getResourceAsStream("mybatis-config.xml");
+            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(input);
+            SqlSession sqlsession = factory.openSession();
+
             while (nameMatcher.find() && imgMatcher.find() && timeMatcher.find() && commentMatcher.find()) {
                 name = nameMatcher.group(1);
                 img = imgMatcher.group(1);
@@ -54,11 +63,24 @@ public class spider {
                 comment = comment.replace("\\n", "");
                 System.out.println(i + " " + name + " " + img + " " + time + " " + comment);
                 i++;
-
+                insertMovie(id, name, img, time, comment, sqlsession);
+                id++;
                 writer.write(name+","+time+","+comment+","+img+"\n");
             }
+            sqlsession.commit();
+            sqlsession.close();
             writer.close();
+            input.close();
         }
+    }
+    public static void insertMovie(int id, String name, String img, String time, String comment, SqlSession sqlSession) {
+        Movie movie = new Movie();
+        movie.setId(id);
+        movie.setName(name);
+        movie.setTime(time);
+        movie.setComment(comment);
+        movie.setImg(img);
+        sqlSession.insert("aaa.insert", movie);
     }
     public String convertUnicodeToString(String s){
         Pattern pattern = Pattern.compile("(\\\\u(\\w{4}))");

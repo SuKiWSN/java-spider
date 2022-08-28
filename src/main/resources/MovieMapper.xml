@@ -1,20 +1,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cn.scitc.mapper.MovieMapper">
-    <resultMap id="MovieMapperMap" type="com.cn.scitc.model.Movie">
+<mapper namespace="aaa">
+    <resultMap id="MovieMapperMap" type="com.cn.scitc.mapper.Movie">
         <id column="name" property="id" jdbcType="VARCHAR"/>
         <id column="time" property="title" jdbcType="VARCHAR"/>
         <id column="img" property="cover" jdbcType="VARCHAR"/>
         <id column="comment" property="rate" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <insert id="insert" keyProperty="id" parameterType="com.cn.scitc.model.Movie">
-        INSERT INTO movie(name, time, img, comment)
+    <insert id="insert" keyProperty="id" parameterType="com.cn.scitc.mapper.Movie">
+        INSERT INTO movie(id, name, time, img, comment)
         VALUES
-            (#{name},#{time},#{img},#{comment})
+            (#{id},#{name},#{time},#{img},#{comment})
     </insert>
-    <select id="findAll" resultMap="MovieMapperMap">
+    <select id="findAll" resultType="com.cn.scitc.mapper.Movie">
         SELECT * FROM movie
     </select>
 </mapper>
