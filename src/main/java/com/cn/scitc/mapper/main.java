@@ -4,22 +4,28 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.MonitorInfo;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class main {
-    public static void main(String[] args) {
-        InputStream input = Movie.class.getClassLoader().getResourceAsStream("mybatis-config.xml");
-        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(input);
-        SqlSession sqlsession = factory.openSession();
-        Movie movie = new Movie();
-        movie.setId(1);
-        movie.setName("why");
-        movie.setComment("真好啊！");
-        movie.setImg("https://www.baicu.com");
-        movie.setTime("2021-02-16 22:33:01");
-        sqlsession.insert("aaa.insert", movie);
-        sqlsession.commit();
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("./wanghanyu.txt");
+        List lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        System.out.println();
+        lines.add("wanghanyu");
+        Files.write(path, lines, StandardCharsets.UTF_8);
+
+//        FileWriter writer = new FileWriter(file);
+//        writer.append("Welcome to the Java World!");
+//        writer.close();
 //
 //        Movie movie = sqlsession.selectOne("aaa.findAll");
 //        System.out.println(movie.getId());
